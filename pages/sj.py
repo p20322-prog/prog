@@ -97,7 +97,7 @@ def empathic_response(user_input):
 print("공감형 AI입니다. '종료'라고 입력하면 끝나요.")
 
 while True:
-    user_input = input("나: ")
+    user_input = st.textinput("나: ")
 
     if "종료" in user_input:
         total = sum(emotion_count.values())
