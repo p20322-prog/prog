@@ -1,5 +1,7 @@
 import random
+import streamlit as st
 
+st.title('감정 공감 AI')
 # 감정별 키워드와 공감 답변
 emotion_data = {
     "슬픔": {
