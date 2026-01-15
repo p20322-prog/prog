@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title('나의 첫 웹 서비스 만들기!!')
+st.title('나의 두 번째 웹 서비스 만들기!!')
 
 # 사용자 입력 받기
 name = st.text_input('이름을 입력해주세요 : ')
