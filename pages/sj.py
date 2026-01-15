@@ -117,5 +117,5 @@ while True:
         break
 
     response = empathic_response(user_input)
-    st.print("AI:", response)
+    st.write("AI:", response)
 
