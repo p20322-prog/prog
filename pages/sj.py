@@ -94,10 +94,10 @@ def empathic_response(user_input):
     ])
 
 # 메인 대화 루프
-st.write("공감형 AI입니다. '종료'라고 입력하면 끝나요.")
+st.print("공감형 AI입니다. '종료'라고 입력하면 끝나요.")
 
 while True:
-    user_input = st.text_input("나: ")
+    user_input = st.input("나: ")
 
     if "종료" in user_input:
         total = sum(emotion_count.values())
@@ -105,17 +105,17 @@ while True:
 
 
         if total == 0:
-            st.write(" 아직 감정이 뚜렷하게 드러나진 않았어.")
+            st.print(" 아직 감정이 뚜렷하게 드러나진 않았어.")
         else:
             for emotion, count in emotion_count.items():
                 if count > 0:
                     percent = round((count / total) * 100, 1)
                     st.write(f"AI: {emotion}이(가) 약 {percent}% 정도 느껴졌어.")
-            st.write("\nAI: 지금까지의 대화를 바탕으로 보면,")
-            st.write("    이건 판단이 아니라, 네가 표현해 온 감정의 흐름이야.")
-            st.write("    이야기해 줘서 고마워. 언제든 다시 와 😊")
+            st.print("\nAI: 지금까지의 대화를 바탕으로 보면,")
+            st.print("    이건 판단이 아니라, 네가 표현해 온 감정의 흐름이야.")
+            st.print("    이야기해 줘서 고마워. 언제든 다시 와 😊")
         break
 
     response = empathic_response(user_input)
-    st.write("AI:", response)
+    st.print("AI:", response)
 
