@@ -151,8 +151,8 @@ if user_input:
             fig, ax = plt.subplots()
             ax.bar(emotions, percentages, color=colors)
             ax.set_ylim(0, 100)
-            ax.set_ylabel("비율(%)")
-            ax.set_title("현재 감정 상태")
+            ax.set_ylabel("percent(%)")
+            ax.set_title("current emotional state")
 
             st.pyplot(fig)
 
