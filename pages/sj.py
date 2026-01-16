@@ -155,12 +155,12 @@ def empathic_response(user_input):
 st.title("공감형 감정 AI")
 st.write("감정을 자유롭게 적어 주세요. `종료`라고 입력하면 분석 결과를 보여줘요.")
 
-with st.form(key="chat_input_form", clear_on_submit=True):
+with st.form(key="chat_input_form", clear_on_submit=True):   #질문하기 모름
     user_input = st.text_input("나의 이야기:")
     submitted = st.form_submit_button("전송")
 
 if submitted and user_input:
-    text = user_input.strip()
+    text = user_input.strip()                                #여기까지지
 
 if user_input:
     st.session_state.chat_log.append(("나", user_input))
@@ -171,11 +171,11 @@ if user_input:
         if total == 0:
             st.write("아직 감정이 뚜렷하게 드러나진 않았어.")
         else:
-            emotion_stats = [
+            emotion_stats = [                                          #여기도 왜 for문이 아래있는지를 모르겠음
                 (e, round((c / total) * 100, 1))
                 for e, c in st.session_state.emotion_count.items()
                 if c > 0
-            ]
+            ]                                                            #여기까지
 
             emotion_stats.sort(key=lambda x: x[1], reverse=True)
 
