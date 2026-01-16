@@ -1,7 +1,6 @@
 import random
 import streamlit as st
 import matplotlib.pyplot as plt
-import koreanize_matplotlib
 
 # =====================
 # 감정별 키워드와 공감 답변
