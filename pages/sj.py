@@ -168,6 +168,7 @@ if user_input:
 
             st.write("이건 판단이 아니라, 네가 표현해 온 감정의 흐름이야.")
             st.write("이야기해 줘서 고마워.")
+        st.session_state.emotion_count = {e: 0 for e in emotion_data} #초기화
 
     else:
         ai_response = empathic_response(user_input)
