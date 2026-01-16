@@ -118,7 +118,13 @@ def empathic_response(user_input):
 st.title("공감형 감정 AI")
 st.write("감정을 자유롭게 적어 주세요. `종료`라고 입력하면 분석 결과를 보여줘요.")
 
+with st.form(key="chat_input_form", clear_on_submit=True):
+    user_input = st.text_input("나의 이야기:")
+    submitted = st.form_submit_button("전송")
 
+if submitted and user_input:
+    text = user_input.strip()
+    
 user_input = st.text_input("나:")
 
 if user_input:
