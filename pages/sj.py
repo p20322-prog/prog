@@ -1,8 +1,11 @@
 import random
 import streamlit as st
+import matplotlib.pyplot as plt
+import koreanize_matplotlib
 
-st.title('감정 공감 AI')
+# =====================
 # 감정별 키워드와 공감 답변
+# =====================
 emotion_data = {
     "슬픔": {
         "keywords": ["슬퍼", "우울", "힘들어", "눈물", "외로워", "상처", "아파", "허무", "공허", "서러워", "눈물나"],
@@ -76,15 +79,31 @@ emotion_data = {
     }
 }
 
-# 감정 카운트 저장용
-emotion_count = {emotion: 0 for emotion in emotion_data}
+emotion_colors = {
+    "슬픔": "#4A6FA5", "기쁨": "#FFD166", "분노": "#EF476F",
+    "불안": "#8E7DBE", "외로움": "#6C757D", "지침": "#495057",
+    "후회": "#A44A3F", "무기력": "#ADB5BD", "기대": "#06D6A0",
+    "혼란": "#B565A7"
+}
 
-# 공감 응답 생성 함수
+
+# =====================
+# Streamlit 상태 초기화
+# =====================
+if "emotion_count" not in st.session_state:
+    st.session_state.emotion_count = {e: 0 for e in emotion_data}
+if "chat_log" not in st.session_state:
+    st.session_state.chat_log = []
+
+
+# =====================
+# 공감 응답 함수
+# =====================
 def empathic_response(user_input):
     for emotion, data in emotion_data.items():
         for keyword in data["keywords"]:
             if keyword in user_input:
-                emotion_count[emotion] += 1
+                st.session_state.emotion_count[emotion] += 1
                 return random.choice(data["responses"])
 
     return random.choice([
@@ -93,29 +112,70 @@ def empathic_response(user_input):
         "지금 기분이 어떤지 더 말해줘도 괜찮아."
     ])
 
-# 메인 대화 루프
-st.write("공감형 AI입니다. '종료'라고 입력하면 끝나요.")
 
-while True:
-    user_input = st.text_input("나:")
+# =====================
+# UI
+# =====================
+st.title("공감형 감정 AI")
+st.write("감정을 자유롭게 적어 주세요. `종료`라고 입력하면 분석 결과를 보여줘요.")
+
+user_input = st.text_input("나:", "")
+
+if user_input:
+    st.session_state.chat_log.append(("나", user_input))
 
     if "종료" in user_input:
-        total = sum(emotion_count.values())
-
-
+        total = sum(st.session_state.emotion_count.values())
 
         if total == 0:
-            st.write(" 아직 감정이 뚜렷하게 드러나진 않았어.")
+            st.write("아직 감정이 뚜렷하게 드러나진 않았어.")
         else:
-            for emotion, count in emotion_count.items():
-                if count > 0:
-                    percent = round((count / total) * 100, 1)
-                    st.write(f"AI: {emotion}이(가) 약 {percent}% 정도 느껴졌어.")
-            st.write("\nAI: 지금까지의 대화를 바탕으로 보면,")
-            st.write("    이건 판단이 아니라, 네가 표현해 온 감정의 흐름이야.")
-            st.write("    이야기해 줘서 고마워. 언제든 다시 와 😊")
-        break
+            emotion_stats = [
+                (e, round((c / total) * 100, 1))
+                for e, c in st.session_state.emotion_count.items()
+                if c > 0
+            ]
 
-    response = empathic_response(user_input)
-    st.write("AI:", response)
+            emotion_stats.sort(key=lambda x: x[1], reverse=True)
 
+            st.subheader("📊 감정 분석 결과")
+            for e, p in emotion_stats:
+                st.write(f"- **{e}**: {p}%")
+
+            emotions = [e for e, _ in emotion_stats]
+            percentages = [p for _, p in emotion_stats]
+            colors = [emotion_colors[e] for e in emotions]
+
+            fig, ax = plt.subplots()
+            bars = ax.bar(emotions, percentages, color=colors)
+            ax.set_ylim(0, 100)
+            ax.set_xlabel("감정")
+            ax.set_ylabel("비율(%)")
+            ax.set_title("현재 감정 상태")
+
+            max_index = percentages.index(max(percentages))
+            max_bar = bars[max_index]
+
+            ax.text(
+                max_bar.get_x() + max_bar.get_width() / 2,
+                max_bar.get_height() + 2,
+                "★",
+                ha="center",
+                fontsize=16
+            )
+
+            st.pyplot(fig)
+
+            st.write("이건 판단이 아니라, 네가 표현해 온 감정의 흐름이야.")
+            st.write("이야기해 줘서 고마워.")
+
+    else:
+        ai_response = empathic_response(user_input)
+        st.session_state.chat_log.append(("AI", ai_response))
+
+
+# =====================
+# 대화 로그 출력
+# =====================
+for speaker, msg in st.session_state.chat_log:
+    st.write(f"**{speaker}:** {msg}")
