@@ -118,8 +118,6 @@ def empathic_response(user_input):
 st.title("공감형 감정 AI")
 st.write("감정을 자유롭게 적어 주세요. `종료`라고 입력하면 분석 결과를 보여줘요.")
 
-user_input = st.text_input("나:", key="user_input")
-
 
 user_input = st.text_input("나:")
 
