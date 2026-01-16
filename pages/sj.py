@@ -122,10 +122,12 @@ user_input = st.text_input("나:", "")
 
 if user_input:
     st.session_state.chat_log.append(("나", user_input))
-
+    st.session_state.user_input = ""
+    st.session_state.emotion_count = {e: 0 for e in emotion_data}
     if "종료" in user_input:
         total = sum(st.session_state.emotion_count.values())
-
+        st.session_state.user_input = ""
+        st.session_state.emotion_count = {e: 0 for e in emotion_data}
         if total == 0:
             st.write("아직 감정이 뚜렷하게 드러나진 않았어.")
         else:
@@ -167,7 +169,6 @@ if user_input:
 
             st.write("이건 판단이 아니라, 네가 표현해 온 감정의 흐름이야.")
             st.write("이야기해 줘서 고마워.")
-        st.session_state.emotion_count = {e: 0 for e in emotion_data} #초기화
 
     else:
         ai_response = empathic_response(user_input)
