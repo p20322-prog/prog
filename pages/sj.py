@@ -118,12 +118,12 @@ def empathic_response(user_input):
 st.title("공감형 감정 AI")
 st.write("감정을 자유롭게 적어 주세요. `종료`라고 입력하면 분석 결과를 보여줘요.")
 
-user_input = st.text_input("나:", "")
+user_input = st.text_input("나:", key="user_input")
+
 
 if user_input:
     st.session_state.chat_log.append(("나", user_input))
-    st.session_state.user_input = ""
-    st.session_state.emotion_count = {e: 0 for e in emotion_data}
+    
     if "종료" in user_input:
         total = sum(st.session_state.emotion_count.values())
         st.session_state.user_input = ""
@@ -169,10 +169,13 @@ if user_input:
             st.write("이건 판단이 아니라, 네가 표현해 온 감정의 흐름이야.")
             st.write("이야기해 줘서 고마워.")
             st.session_state.emotion_count = {e: 0 for e in emotion_data}
+            st.session_state.user_input = ""   # 입력창 비우기
+            st.stop()                          # 여기서 실행 종료
 
     else:
         ai_response = empathic_response(user_input)
         st.session_state.chat_log.append(("AI", ai_response))
+        st.session_state.user_input = ""   # 일반 입력 후 비우기
 
 
 # =====================
