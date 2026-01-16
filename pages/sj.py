@@ -121,12 +121,14 @@ st.write("감정을 자유롭게 적어 주세요. `종료`라고 입력하면 �
 user_input = st.text_input("나:", key="user_input")
 
 
+user_input = st.text_input("나:")
+
 if user_input:
     st.session_state.chat_log.append(("나", user_input))
-    
+
     if "종료" in user_input:
         total = sum(st.session_state.emotion_count.values())
-        st.session_state.user_input = ""
+
         if total == 0:
             st.write("아직 감정이 뚜렷하게 드러나진 않았어.")
         else:
@@ -147,36 +149,22 @@ if user_input:
             colors = [emotion_colors[e] for e in emotions]
 
             fig, ax = plt.subplots()
-            bars = ax.bar(emotions, percentages, color=colors)
+            ax.bar(emotions, percentages, color=colors)
             ax.set_ylim(0, 100)
-            ax.set_xlabel("감정")
             ax.set_ylabel("비율(%)")
             ax.set_title("현재 감정 상태")
 
-            max_index = percentages.index(max(percentages))
-            max_bar = bars[max_index]
-
-            ax.text(
-                max_bar.get_x() + max_bar.get_width() / 2,
-                max_bar.get_height() + 2,
-                "★",
-                ha="center",
-                fontsize=16
-            )
-
             st.pyplot(fig)
 
-            st.write("이건 판단이 아니라, 네가 표현해 온 감정의 흐름이야.")
-            st.write("이야기해 줘서 고마워.")
-            st.session_state.emotion_count = {e: 0 for e in emotion_data}
-            st.session_state.user_input = ""   # 입력창 비우기
-            st.stop()                          # 여기서 실행 종료
+        # ✅ 종료 처리 (초기화)
+        st.session_state.emotion_count = {e: 0 for e in emotion_data}
+        st.session_state.chat_log = []
+
+        st.experimental_rerun()
 
     else:
         ai_response = empathic_response(user_input)
         st.session_state.chat_log.append(("AI", ai_response))
-        st.session_state.user_input = ""   # 일반 입력 후 비우기
-
 
 # =====================
 # 대화 로그 출력
