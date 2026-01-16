@@ -124,8 +124,6 @@ with st.form(key="chat_input_form", clear_on_submit=True):
 
 if submitted and user_input:
     text = user_input.strip()
-    
-user_input = st.text_input("나:")
 
 if user_input:
     st.session_state.chat_log.append(("나", user_input))
