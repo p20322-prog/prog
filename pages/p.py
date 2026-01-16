@@ -58,7 +58,8 @@ def empathic_response(text):
     for emotion, data in emotion_data.items():
         for keyword in data["keywords"]:
             if keyword in text:
-                st.session_state.emotion_count[emotion] = st.session_state.emotion_count.get(emotion, 0) + 1
+                #st.session_state.emotion_count[emotion] = st.session_state.emotion_count.get(emotion, 0) + 1
+                st.session_state.emotion_count[emotion] = st.session_state.emotion_count[emotion] + 1
                 return random.choice(data["responses"])
     return "그런 일이 있었구나. 조금 더 이야기해 줄래?"
 
