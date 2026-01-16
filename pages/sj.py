@@ -158,8 +158,6 @@ if user_input:
         st.session_state.emotion_count = {e: 0 for e in emotion_data}
         st.session_state.chat_log = []
 
-        st.rerun()
-
     else:
         ai_response = empathic_response(user_input)
         st.session_state.chat_log.append(("AI", ai_response))
